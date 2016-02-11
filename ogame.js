@@ -50,11 +50,11 @@ $(document).ajaxSuccess(function(a, b, c) {
                 link;
 
             if (number > 4 && number < 26) {
-                link = 'https://drive.google.com/uc?id=0B1SN1E5hHbFmemE5bVhYRGo5ZjQ';
+                link = 'https://raw.githubusercontent.com/Falydoor/Tampermonkey/master/resources/low-debris.png';
             } else if (number > 25 && number < 51) {
-                link = 'https://drive.google.com/uc?id=0B1SN1E5hHbFmcS1iNklWcjZOb1k';
+                link = 'https://raw.githubusercontent.com/Falydoor/Tampermonkey/master/resources/medium-debris.png';
             } else if (number > 50) {
-                link = 'https://drive.google.com/uc?id=0B1SN1E5hHbFmOWtFUUhWTThCc0k';
+                link = 'https://raw.githubusercontent.com/Falydoor/Tampermonkey/master/resources/high-debris.png';
             }
             if (link) {
                 debris.closest('td').find('img').get(1).src = link;
