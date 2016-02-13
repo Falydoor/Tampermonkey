@@ -3,23 +3,21 @@ $(function() {
 
     // Projo
     $('#sortileges').find('a[href="' + detailSort + '1"]').closest('tr').click(function() {
-        var $tr = $(this);
+        var $rowDetail = $(this).next();
 
-        if ($tr.hasClass('footable-detail-show') && !$tr.data('details')) {
+        if ($rowDetail.hasClass('footable-row-detail') && $rowDetail.find('div.footable-row-detail-row').length === 2) {
             var view = parseIntWithDefault($('#vue').html()),
                 viewHalf = Math.floor(view / 2),
                 viewTot = parseIntWithDefault($('#vue_tot').html()),
                 range = rangeProjo(viewTot),
                 attackM = parseIntWithDefault($('#att_m').html()),
-                damageM = parseIntWithDefault($('#deg_m').html()),
-                damage = displayDamage(viewHalf, damageM) + ' (' + displayDamage(Math.floor(viewHalf * 1.5), damageM) + ')',
-                damageClose = displayDamage(viewHalf + range, damageM) + ' (' + displayDamage(Math.floor((viewHalf + range) * 1.5), damageM) + ')';
+                damageM = parseIntWithDefault($('#deg_m').html());
 
-            $tr.data('details', true).next().find('div.footable-row-detail-inner')
+            $rowDetail.find('div.footable-row-detail-inner')
                 .append(buildRowDetail('Portée:', range))
                 .append(buildRowDetail('Attaque:', displayAttack(view, attackM)))
-                .append(buildRowDetail('Dégâts:', damage))
-                .append(buildRowDetail('Dégâts proximités:', damageClose));
+                .append(buildRowDetail('Dégâts:', displayDamage(viewHalf, damageM)))
+                .append(buildRowDetail('Dégâts proximités:', displayDamage(viewHalf + range, damageM)));
         }
     });
 });
@@ -59,5 +57,5 @@ function displayAttack(attack, bonus) {
 }
 
 function displayDamage(damage, bonus) {
-    return (damage + bonus) + '-' + (damage * 3 + bonus);
+    return (damage + bonus) + '-' + (damage * 3 + bonus) + ' (' + (damage * 1.5 + bonus) + '-' + (damage * 4.5 + bonus) + ')';
 }
