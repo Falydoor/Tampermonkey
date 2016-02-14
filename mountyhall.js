@@ -1,6 +1,10 @@
 $(function() {
     var detailSort = '/mountyhall/View/DetailSort.php?ai_IDSort=';
 
+    // New level PI remaining
+    var $level = $('#niv');
+    $level.append(' (' + (calcPiFromLevel($level.html()) + (parseIntWithDefault($level.html()) + 1) * 10 - parseIntWithDefault($('#pitot').html())) + ' PI pour niveau sup)');
+
     // Projo
     $('#sortileges').find('a[href="' + detailSort + '1"]').closest('tr').click(function() {
         var $rowDetail = $(this).next();
@@ -22,9 +26,13 @@ $(function() {
     });
 });
 
-function parseIntWithDefault(v) {
-    v = parseInt(v, 10);
-    return isNaN(v) ? 0 : v;
+function calcPiFromLevel(level) {
+    return level > 1 ? level * 10 + calcPiFromLevel(level - 1) : 0;
+}
+
+function parseIntWithDefault(value) {
+    value = parseInt(value, 10);
+    return isNaN(value) ? 0 : value;
 }
 
 function rangeProjo(view) {
