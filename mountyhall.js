@@ -3,23 +3,21 @@ $(function() {
 
     // New level PI remaining
     var $level = $('#niv');
-    $level.append(' (' + (calcPiFromLevel($level.html()) + (parseIntWithDefault($level.html()) + 1) * 10 - parseIntWithDefault($('#pitot').html())) + ' PI pour niveau sup)');
+    $level.append(' (' + (calcPiFromLevel($level.html()) + (parseIntWithDefault($level.html()) + 1) * 10 - getIntFromId('pitot')) + ' PI pour niveau sup)');
 
     // Projo
     $('#sortileges').find('a[href="' + detailSort + '1"]').closest('tr').click(function() {
         var $rowDetail = $(this).next();
 
         if ($rowDetail.hasClass('footable-row-detail') && $rowDetail.find('div.footable-row-detail-row').length === 2) {
-            var view = parseIntWithDefault($('#vue').html()),
+            var view = getIntFromId('vue'),
                 viewHalf = Math.floor(view / 2),
-                viewTot = parseIntWithDefault($('#vue_tot').html()),
-                range = rangeProjo(viewTot),
-                attackM = parseIntWithDefault($('#att_m').html()),
-                damageM = parseIntWithDefault($('#deg_m').html());
+                range = rangeProjo(getIntFromId('vue_tot')),
+                damageM = getIntFromId('deg_m');
 
             $rowDetail.find('div.footable-row-detail-inner')
                 .append(buildRowDetail('Portée:', range))
-                .append(buildRowDetail('Attaque:', displayAttack(view, attackM)))
+                .append(buildRowDetail('Attaque:', displayAttack(view, getIntFromId('att_m'))))
                 .append(buildRowDetail('Dégâts:', displayDamage(viewHalf, damageM)))
                 .append(buildRowDetail('Dégâts proximités:', displayDamage(viewHalf + range, damageM)));
         }
@@ -30,30 +28,23 @@ function calcPiFromLevel(level) {
     return level > 1 ? level * 10 + calcPiFromLevel(level - 1) : 0;
 }
 
+function getIntFromId(id) {
+    parseIntWithDefault($('#' + id).html());
+}
+
 function parseIntWithDefault(value) {
     value = parseInt(value, 10);
     return isNaN(value) ? 0 : value;
 }
 
-function rangeProjo(view) {
-    if (view < 5) {
-        return 1;
-    } else if (view < 10) {
-        return 2;
-    } else if (view < 16) {
-        return 3;
-    } else if (view < 23) {
-        return 4;
-    } else if (view < 31) {
-        return 5;
-    } else if (view < 40) {
-        return 6;
-    } else if (view < 50) {
-        return 7;
-    } else if (view < 61) {
-        return 8;
+function rangeProjo(view, viewMax, range) {
+    if (!viewMax) {
+        viewMax = 4;
     }
-    return 'TROP GROSSE VUE';
+    if (!range) {
+        range = 1;
+    }
+    return view <= viewMax ? range : rangeProjo(view, viewMax + range + 4, range + 1);
 }
 
 function buildRowDetail(name, value) {
