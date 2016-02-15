@@ -29,7 +29,7 @@ function calcPiFromLevel(level) {
 }
 
 function getIntFromId(id) {
-    parseIntWithDefault($('#' + id).html());
+    return parseIntWithDefault($('#' + id).html());
 }
 
 function parseIntWithDefault(value) {
